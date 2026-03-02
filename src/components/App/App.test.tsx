@@ -4,6 +4,15 @@ import { AppRootProps, PluginType } from '@grafana/data';
 import { render, waitFor } from '@testing-library/react';
 import App from './App';
 
+// Mock the CodeEditor since it relies on Monaco which is not available in jsdom
+jest.mock('@grafana/ui', () => {
+  const actual = jest.requireActual('@grafana/ui');
+  return {
+    ...actual,
+    CodeEditor: ({ value }: { value: string }) => <pre data-testid="code-editor">{value}</pre>,
+  };
+});
+
 describe('Components/App', () => {
   let props: AppRootProps;
 
@@ -25,14 +34,15 @@ describe('Components/App', () => {
     } as unknown as AppRootProps;
   });
 
-  test('renders without an error"', async () => {
+  test('renders the generator page', async () => {
     const { queryByText } = render(
       <MemoryRouter>
         <App {...props} />
       </MemoryRouter>
     );
 
-    // Application is lazy loaded, so we need to wait for the component and routes to be rendered
-    await waitFor(() => expect(queryByText(/this is page one./i)).toBeInTheDocument(), { timeout: 2000 });
+    await waitFor(() => expect(queryByText(/OpenTelemetry JS Instrumentation Generator/i)).toBeInTheDocument(), {
+      timeout: 2000,
+    });
   });
 });

@@ -4,18 +4,15 @@ export const testIds = {
     apiUrl: 'data-testid ac-api-url',
     submit: 'data-testid ac-submit-form',
   },
-  pageOne: {
-    container: 'data-testid pg-one-container',
-    navigateToFour: 'data-testid navigate-to-four',
-  },
-  pageTwo: {
-    container: 'data-testid pg-two-container',
-  },
-  pageThree: {
-    container: 'data-testid pg-three-container',
-  },
-  pageFour: {
-    container: 'data-testid pg-four-container',
-    navigateBack: 'data-testid navigate-back',
+  generator: {
+    container: 'data-testid otel-generator-container',
+    serviceName: 'data-testid otel-service-name',
+    collectorUrl: 'data-testid otel-collector-url',
+    enableTraces: 'data-testid otel-enable-traces',
+    enableMetrics: 'data-testid otel-enable-metrics',
+    enableLogs: 'data-testid otel-enable-logs',
+    copyButton: 'data-testid otel-copy-button',
+    downloadButton: 'data-testid otel-download-button',
+    instrumentationPrefix: 'data-testid otel-instrumentation-',
   },
 };
