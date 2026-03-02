@@ -611,7 +611,7 @@ function OpenTelemetryGeneratorPage() {
               <CodeEditor
                 value={currentOutput}
                 language={codeLanguage}
-                height="100%"
+                height="520px"
                 showMiniMap={false}
                 showLineNumbers={true}
                 readOnly={true}
@@ -660,9 +660,10 @@ const getStyles = (theme: GrafanaTheme2) => ({
   `,
   layout: css`
     display: grid;
-    grid-template-columns: minmax(380px, 1fr) minmax(480px, 1.5fr);
+    grid-template-columns: 1fr 1.5fr;
     gap: ${theme.spacing(3)};
     align-items: start;
+    min-width: 0;
 
     @media (max-width: 1200px) {
       grid-template-columns: 1fr;
@@ -728,6 +729,9 @@ const getStyles = (theme: GrafanaTheme2) => ({
     background: ${theme.colors.background.primary};
     position: sticky;
     top: ${theme.spacing(2)};
+    min-width: 0;
+    min-height: 600px;
+    overflow: hidden;
   `,
   previewHeader: css`
     display: flex;
@@ -748,7 +752,9 @@ const getStyles = (theme: GrafanaTheme2) => ({
   `,
   editorContainer: css`
     height: 520px;
+    min-height: 520px;
     overflow: hidden;
+    position: relative;
   `,
   usageAlert: css`
     margin: ${theme.spacing(1)} ${theme.spacing(2)} ${theme.spacing(2)};
