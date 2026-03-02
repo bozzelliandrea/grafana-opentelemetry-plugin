@@ -255,7 +255,6 @@ function OpenTelemetryGeneratorPage() {
               label="Service Configuration"
               isOpen={openSections.basic}
               onToggle={() => toggleSection('basic')}
-              collapsible
             >
               <div className={s.section}>
                 <Field label="Service Name" description="The name that identifies your service in traces">
@@ -310,7 +309,6 @@ function OpenTelemetryGeneratorPage() {
               label="Signals & Exporters"
               isOpen={openSections.signals}
               onToggle={() => toggleSection('signals')}
-              collapsible
             >
               <div className={s.section}>
                 <div className={s.signalRow}>
@@ -372,17 +370,6 @@ function OpenTelemetryGeneratorPage() {
                     </Field>
                   )}
                 </div>
-
-                <InlineField
-                  label="Console Debug"
-                  labelWidth={14}
-                  tooltip="Also log spans to the console for debugging"
-                >
-                  <InlineSwitch
-                    value={config.enableConsoleExporter}
-                    onChange={() => updateConfig('enableConsoleExporter', !config.enableConsoleExporter)}
-                  />
-                </InlineField>
               </div>
             </Collapse>
 
@@ -391,7 +378,6 @@ function OpenTelemetryGeneratorPage() {
               label={`Instrumentations (${selectedCount} selected)`}
               isOpen={openSections.instrumentations}
               onToggle={() => toggleSection('instrumentations')}
-              collapsible
             >
               <div className={s.section}>
                 <div className={s.instrumentationActions}>
@@ -445,7 +431,6 @@ function OpenTelemetryGeneratorPage() {
               label="Sampling"
               isOpen={openSections.sampling}
               onToggle={() => toggleSection('sampling')}
-              collapsible
             >
               <div className={s.section}>
                 <Field label="Sampler">
@@ -477,7 +462,6 @@ function OpenTelemetryGeneratorPage() {
               label="Propagators"
               isOpen={openSections.propagators}
               onToggle={() => toggleSection('propagators')}
-              collapsible
             >
               <div className={s.section}>
                 {PROPAGATOR_OPTIONS.map((prop) => (
@@ -498,7 +482,6 @@ function OpenTelemetryGeneratorPage() {
               label="Custom Resource Attributes"
               isOpen={openSections.resources}
               onToggle={() => toggleSection('resources')}
-              collapsible
             >
               <div className={s.section}>
                 {config.resourceAttributes.map((attr, i) => (
@@ -535,7 +518,6 @@ function OpenTelemetryGeneratorPage() {
               label="Output Settings"
               isOpen={openSections.output}
               onToggle={() => toggleSection('output')}
-              collapsible
             >
               <div className={s.section}>
                 <Field label="Package Manager">
