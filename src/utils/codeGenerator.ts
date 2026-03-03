@@ -340,9 +340,13 @@ function getSamplerImports(config: OTelConfig): string[] {
 function getPropagatorImports(config: OTelConfig): string[] {
   const lines: string[] = [];
   const ts = config.useTypeScript;
+
+  if (config.propagators.length > 1) {
+    addImport(lines, '@opentelemetry/core', 'CompositePropagator', ts);
+  }
+
   const hasW3C = config.propagators.includes('tracecontext') || config.propagators.includes('baggage');
   if (hasW3C) {
-    addImport(lines, '@opentelemetry/core', 'CompositePropagator', ts);
     if (config.propagators.includes('tracecontext')) {
       addImport(lines, '@opentelemetry/core', 'W3CTraceContextPropagator', ts);
     }
@@ -435,6 +439,11 @@ function getPropagatorInit(config: OTelConfig): string[] {
         break;
     }
   });
+
+  if (propagatorEntries.length === 1) {
+    // No need for external comma since it's already included in the single entry, and no need for CompositePropagator wrapper
+    return [`  textMapPropagator: ${propagatorEntries[0].trim()}`];
+  }
 
   return [
     `  textMapPropagator: new CompositePropagator({`,
