@@ -35,8 +35,8 @@ export const INSTRUMENTED_PACKAGE_JSON = JSON.stringify(
     type: 'module',
     main: 'src/app.js',
     scripts: {
-      start: 'node src/app.js',
-      dev: 'node --watch src/app.js',
+      start: 'node --import ./src/instrumentation.js ./src/app.js',
+      dev: 'node --watch --import ./src/instrumentation.js ./src/app.js',
     },
     dependencies: {
       '@ogcio/o11y-sdk-node': '^0.9.0',
@@ -147,8 +147,6 @@ export const APP_JS_INSTRUMENTED = `\
 // ─────────────────────────────────────────────────────────────────────────────
 // The instrumentation bootstrap MUST be the very first import.
 // ─────────────────────────────────────────────────────────────────────────────
-import './instrumentation.js';
-
 import Fastify from 'fastify';
 
 const app = Fastify({ logger: true });
@@ -197,6 +195,17 @@ app.get('/slow', async () => {
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────────
-const PORT = Number(process.env.PORT ?? 3000);
+const PORT = Number(process.env.PORT ?? 9999);
 await app.listen({ port: PORT, host: '0.0.0.0' });
+`;
+
+export const DOCKER_LGTM = `\
+services:
+  otel-lgtm:
+    image: grafana/otel-lgtm
+    ports:
+      - "3000:3000"
+      - "4317:4317"
+      - "4318:4318"
+    restart: "no"
 `;

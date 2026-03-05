@@ -11,6 +11,7 @@ import {
   APP_JS,
   APP_JS_INSTRUMENTED,
   INSTRUMENTATION_JS,
+  DOCKER_LGTM,
 } from '../utils/sampleApps';
 import JSZip from 'jszip';
 
@@ -33,6 +34,7 @@ const BLANK_FILES: AppFile[] = [
 
 const INSTRUMENTED_FILES: AppFile[] = [
   { name: 'package.json', language: 'json', content: INSTRUMENTED_PACKAGE_JSON },
+  { name: 'docker-compose.yaml', language: 'yaml', content: DOCKER_LGTM },
   { name: 'src/instrumentation.js', language: 'javascript', content: INSTRUMENTATION_JS },
   { name: 'src/app.js', language: 'javascript', content: APP_JS_INSTRUMENTED },
 ];
