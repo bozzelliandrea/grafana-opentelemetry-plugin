@@ -12,6 +12,7 @@ import {
   APP_JS_INSTRUMENTED,
   INSTRUMENTATION_JS,
 } from '../utils/sampleApps';
+import JSZip from 'jszip';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -199,6 +200,32 @@ function FileViewer({ files }: { files: AppFile[] }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = files[activeIdx];
 
+  const generateZip = async () => {
+    const zip = new JSZip();
+
+    for (const file of files) {
+      zip.file(file.name, file.content);
+    }
+    zip.file(
+      'README.md',
+      '# Sample Application\n\nThis is a sample Node.js application for OpenTelemetry practice. It includes a few routes and an in-memory data store, and can be used to generate logs, traces and metrics for exploration in Grafana.\n\n## Routes\n- `GET /health`: Health check endpoint.\n- `GET /`: Welcome message and route listing.\n- `GET /items`: List all items.\n- `GET /items/:id`: Get a single item by id.\n- `POST /items`: Create a new item.\n- `GET /slow`: Simulate a slow endpoint with a 2-second delay.\n\n## Usage\n1. Start an OpenTelemetry Collector (e.g. using the provided `docker-compose.yaml`).\n2. Run the application with `npm start`.\n3. Generate some traffic by hitting the endpoints (e.g. using `curl`).\n4. Explore the emitted telemetry data in Grafana (Loki for logs, Tempo for traces, Mimir for metrics).'
+    );
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'project.zip';
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const download = useCallback(() => {
     const blob = new Blob([active.content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -220,6 +247,9 @@ function FileViewer({ files }: { files: AppFile[] }) {
           </button>
         ))}
         <div className={s.spacer} />
+        <Button variant="primary" size="sm" icon="archive-alt" onClick={generateZip}>
+          Download ZIP
+        </Button>
         <Button variant="secondary" size="sm" icon="download-alt" onClick={download}>
           Download {active.name.split('/').pop()}
         </Button>
